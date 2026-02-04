@@ -1,0 +1,17 @@
+services:
+  postgres:
+    image: postgres:18-alpine3.22
+    container_name: db_postgres_dbc
+    environment:
+      POSTGRES_DB: dbc_hris
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypass
+    volumes:
+      - ./initdb:/docker-entrypoint-initdb.d
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
