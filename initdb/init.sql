@@ -33,6 +33,7 @@ CREATE INDEX IF NOT EXISTS idx_users_location ON users(area_code);
 CREATE TABLE IF NOT EXISTS attendances (
   id BIGSERIAL PRIMARY KEY,
   user_id BIGINT NOT NULL, -- Changed from employee_id to user_id
+  check_in_date DATE DEFAULT CURRENT_DATE,
   check_in_time TIMESTAMP NOT NULL,
   check_in_lat DECIMAL(10,8) DEFAULT NULL,
   check_in_lng DECIMAL(11,8) DEFAULT NULL,
@@ -81,3 +82,17 @@ INSERT INTO users (username, email, name, password, role, employee_id, employee_
 ('admin', 'admin@example.com', 'Admin User', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin', 'ADM001', 'AD001', 'A', NOW(), 'ID', TRUE, NOW(), NOW()),
 ('employee', 'employee@example.com', 'John Doe', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'employee', 'EMP001', 'JD001', 'A', NOW(), 'ID', TRUE, NOW(), NOW())
 ON CONFLICT (username) DO NOTHING;
+
+CREATE TABLE IF NOT EXISTS master_office (
+  id BIGSERIAL PRIMARY KEY,
+  office_name VARCHAR(255) DEFAULT NULL,
+  office_description VARCHAR(255) DEFAULT NULL,  
+  check_in_lat DECIMAL(10,8) DEFAULT NULL,
+  check_in_lng DECIMAL(11,8) DEFAULT NULL,
+  check_in_address VARCHAR(255) DEFAULT NULL,
+  qr_code TEXT DEFAULT NULL,
+  status VARCHAR(20) DEFAULT 'active',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE INDEX IF NOT EXISTS idx_master_office_name ON master_office(office_name);
